@@ -1,1 +1,24 @@
-# project-4
+# project-4--Factors Preventing Agency Turnover Summary
+
+Preparation and Recoding
+
+I imported the excel spreadsheet and created two dataframes for the department of labor and commerce. I decided to generate the value counts for the columns once cleaned which I realized after defeated the purpose of exploring the whole dataframe. But at the time seemed like the right decision since there were so many columns. I then dropped the rows where the outcome variable (DLEAVING) was null and all of the columns not indicated in the codebook or demographic codes. I decided that a missingness of 20% above would be my cutpoint for rows and dropped those. I then had to decide whether or not to remove variables with a missingess of more than 10%. DRNO was the only column that fell in that category at 16%. I didn't remove it for no reason other than I was going to come back to it and didn't have time. Also in theory it seemed like it could be an important datapoint.  DRNO-race was more important in the department of commerce data than labor and didn't have a high missingness. I recoded the missing values replacing occurrences of the string 'X' with NaN and then filling NaN values in each column with the first non-NaN value in that column.I didn't have any real reason for making that choice as opposed to choosing the median. I figured I might have time to come back and play around with the options and never did.
+
+Creating Dummies
+
+I started preparing the data for a machine learning model by creating the dummies for the Q84 column then the features. I extracted the column labeled 'DLEAVING' from the DataFrame dol_df and assigned it to the variable outcome. 
+
+I created a new DataFrame called features by excluding the 'DLEAVING' column from the original DataFrame, dol_df. This DataFrame now contains all the features that are used to predict the target variables. I then converted variables into binary variables, representing the presence or absence of a particular category. The resulting DataFrame, features_dummies now has new columns for each category in the original categorical columns.I had to go back and deal with the 'DLEAVING' column values. If the value was 'B', 'C', or 'D', it was replaced with 1; otherwise, it was replaced with 0 transforming it into a binary variable. I merged the features_dummies with the outcome dataframe. I removed the demographics columns to create a dataframe called extracted_columns_df. I created some new column names for ease of viewing but didn't change all column names because I ran out of time. I generated a dataframe of the Q columns next for correlation analysis, excluding dummies, correlation_no_dummies. That data was used to plot the value counts for reponses that was asked for earlier in the instructions.
+
+Correlation results
+
+The intial heatmap indicated a strong positive correlation with some of the supervisor and managerial questions. I ended up dropping questions 86,56,60,49,52 in the labor df.I exported the correlation numbers to an excel spreadsheet to better visualize and choose which to drop, corr.csv and corr2.csv. 
+
+Testing and Training--Department of Labor
+I evaluated the performance of the logistic regression model with the confusion matrices and classification reports. In order to prevent overfitting I fitted a logistic regression model with L2 penalty. They both have high precision for no but not for yes indicating a challenge with predicting positive instances.I created and fit a random forest classifier, it has a decent accuracy but struggles more with predicting the positive class ("yes's"). As it relates to feature importance how people feel about their ability to use their talents at work and management were all important questions predicting turnover.
+
+Testing--Department of Commerce
+I did cleaning and recoding for commerce in another notebook, I then exported the CSV to the original notebook, result2_df.csv for testing. I followed the same preperation and recoding steps as I did for the department of labor, but dropped these highly correlated questions before running the model:'Q86', 'Q56', 'Q60', 'Q49', 'Q50'. I tested only with the L2 model since it seemed to be the best for the department of labor. The commerce group also has a slightly higher precision for no's than yes. 0 precision and higher 1 precision indicating it was easier to  predict the positive instances. The recall is much higher in this group though indicating that the model was better here at capturing the no's but not the yes's. Some of the same questions regarding the value of the employees contribution were important here. But also some demographic information came into play.
+
+The demographic information that affected commerce but not labor is an important area to explore further. If given time I would have removed more of the highly correlated variables to see if that improved the accuracy for making positive predictions.
+
