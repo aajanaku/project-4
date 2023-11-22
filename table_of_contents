@@ -1,0 +1,7 @@
+Plan A Task ML_final.xlsx
+README.md--summary
+corr.csv--labor corrrelation output
+corr2.csv--commerce correlation output
+project 4-Commerce cleaning.ipynb--cleaning and recoding for commerce only
+project 4.ipynb--everything for labor and testing only for correlation
+result2_df.csv--commerce csv used to moved cleaned and recoded data to notebook project 4.ipynb
